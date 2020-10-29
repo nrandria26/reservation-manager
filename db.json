@@ -1,0 +1,53 @@
+{
+  "clients": [
+    {
+      "lastName": "Doe",
+      "firstName": "John",
+      "email": "john.doe@mail.com",
+      "phone": "0112211891",
+      "street": "5 Route du Chêne Rond",
+      "city": "Marcoussis",
+      "state": "France",
+      "zip": "91460",
+      "id": 1
+    },
+    {
+      "lastName": "Doe",
+      "firstName": "Jane",
+      "email": "jane.doe@mail.com",
+      "phone": "0122222891",
+      "street": "Route du Chêne Rond",
+      "city": "Marcoussis",
+      "state": "France",
+      "zip": "91460",
+      "id": 2
+    }
+  ],
+  "reservations": [],
+  "restaurants": [
+    {
+      "nameRestaurant": "Tran Tran Zai",
+      "addressRestaurant": "10 Rue de l'École Polytechnique, 75005 Paris",
+      "phoneRestaurant": "0111187134",
+      "id": 1
+    },
+    {
+      "nameRestaurant": "So6Gasy",
+      "addressRestaurant": "4 Rue de la Grange Ory, 94230 Cachan",
+      "phoneRestaurant": "0784552570",
+      "id": 2
+    },
+    {
+      "nameRestaurant": "KFC La Ville du Bois",
+      "addressRestaurant": "20 Rue de la Croix Saint-Jacques, 91620 La ville-du-Bois",
+      "phoneRestaurant": "0133311112",
+      "id": 3
+    },
+    {
+      "nameRestaurant": "Léon de Bruxelles",
+      "addressRestaurant": "113 Route d'Orléans, 91310 Montlhéry",
+      "phoneRestaurant": "0666666666",
+      "id": 4
+    }
+  ]
+}
