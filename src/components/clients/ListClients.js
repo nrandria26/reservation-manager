@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import ClientService from '../../services/ClientService';
-import { BsSearch } from 'react-icons/bs';
+/*import { BsSearch } from 'react-icons/bs';*/
 import { FaUserEdit } from 'react-icons/fa';
+import Search from '../Search';
 
 const ListCients = () => {
 
@@ -12,7 +13,9 @@ const ListCients = () => {
     const [searchClient, setSearchClient] = useState("");
 
     useEffect(
-        () => { getAllClients(); }, []
+        () => {
+            getAllClients();
+        }, []
     );
 
     const getAllClients = () => {
@@ -30,9 +33,12 @@ const ListCients = () => {
         setCurrentIndex(index);
     };
 
-    const onChangeSearchClient = e => {
+    /*const onChangeSearchClient = e => {
         const searchClient = e.target.value;
         setSearchClient(searchClient);
+    };*/
+    const searchHandler = (value) => {
+        setSearchClient(value);
     };
 
     const searchClientByName = () => {
@@ -51,6 +57,10 @@ const ListCients = () => {
         }
     };
 
+    let updateListClients = clients.filter(
+        (client) => { return client.lastName.includes(searchClient); }
+    );
+
     if (clients.length === 0) {
         return (
             <React.Fragment>
@@ -65,34 +75,14 @@ const ListCients = () => {
     } else {
         return (
             <React.Fragment>
-                <div className="row justify-content-start">
-                    <div className="col-md-6 mb-3">
-                        <div className="input-group">
-                            <input
-                                type="text"
-                                className="form-control"
-                                placeholder="Recherche par nom"
-                                value={searchClient}
-                                onChange={onChangeSearchClient}
-                            />
-                            <div className="input-group-append">
-                                <button
-                                    className="btn btn-outline-secondary"
-                                    type="button"
-                                    onClick={searchClientByName}
-                                >
-                                    <span><BsSearch /></span> Rechercher
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <Search searchHandler={searchHandler} />
 
                 <div className="row justify-content-center">
                     <div className="col-md-6 mb-5">
                         <ul className="list-group">
                             {
-                                clients && clients.map(
+                                /*clients && clients.map(*/
+                                updateListClients && updateListClients.map(
                                     (client, index) => (
                                         <li
                                             key={index}

@@ -5,6 +5,7 @@ import { BsSearch } from 'react-icons/bs';
 import moment from 'moment';
 import 'moment/locale/fr';
 import { BiPen } from 'react-icons/bi';
+import Search from '../Search';
 
 const ListReservations = () => {
 
@@ -32,10 +33,13 @@ const ListReservations = () => {
         setCurrentIndex(index);
     }
 
-    const onChangeSearchReservation = e => {
+    /*const onChangeSearchReservation = e => {
         const searchReservation = e.target.value;
         setSearchReservation(searchReservation);
-    }
+    }*/
+    const searchHandler = (value) => {
+        setSearchReservation(value);
+    };
 
     const searchReservationByName = () => {
         console.log("Recherche d'une réservation à partir du nom du client");
@@ -53,6 +57,10 @@ const ListReservations = () => {
         }
     }
 
+    let updateListReservations = reservations.filter(
+        (reservation) => { return reservation.nameReservation.includes(searchReservation); }
+    );
+
     if (reservations.length === 0) {
         return (
             <React.Fragment>
@@ -67,34 +75,14 @@ const ListReservations = () => {
     } else {
         return (
             <React.Fragment>
-                <div className="row justify-content-start">
-                    <div className="col-md-6 mb-3">
-                        <div className="input-group">
-                            <input
-                                type="text"
-                                className="form-control"
-                                placeholder="Recherche par nom"
-                                value={searchReservation}
-                                onChange={onChangeSearchReservation}
-                            />
-                            <div className="input-group-append">
-                                <button
-                                    className="btn btn-outline-secondary"
-                                    type="button"
-                                    onClick={searchReservationByName}
-                                >
-                                    <span><BsSearch /></span> Rechercher
-                                    </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <Search searchHandler={searchHandler} />
 
                 <div className="row justify-content-center">
                     <div className="col-md-6 mb-5">
                         <ul className="list-group">
                             {
-                                reservations && reservations.map(
+                                /*reservations && reservations.map(*/
+                                updateListReservations && updateListReservations.map(
                                     (reservation, index) => (
                                         <li
                                             key={index}

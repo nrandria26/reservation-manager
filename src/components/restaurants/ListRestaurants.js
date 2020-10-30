@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import RestaurantService from '../../services/RestaurantService';
 import { BiPen } from 'react-icons/bi';
+import Search from '../Search';
 
 const ListRestaurants = () => {
 
     const [restaurants, setRestaurants] = useState([]);
     const [currentRestaurant, setCurrentRestaurant] = useState(null);
     const [currentIndex, setCurrentIndex] = useState(-1);
+    const [searchRestaurant, setSearchRestaurant] = useState("");
 
     useEffect(
         () => { getAllRestaurants(); }, []
@@ -21,12 +23,20 @@ const ListRestaurants = () => {
                 setRestaurants(response.data);
             })
             .catch(e => { console.log(e) });
-    }
+    };
 
     const setActiveRestaurant = (restaurant, index) => {
         setCurrentRestaurant(restaurant);
         setCurrentIndex(index);
-    }
+    };
+
+    const searchHandler = (value) => {
+        setSearchRestaurant(value);
+    };
+
+    let updateListRestaurants = restaurants.filter(
+        (restaurant) => { return restaurant.nameRestaurant.includes(searchRestaurant); }
+    );
 
     if (restaurants.length === 0) {
         return (
@@ -42,11 +52,14 @@ const ListRestaurants = () => {
     } else {
         return (
             <React.Fragment>
+                <Search searchHandler={searchHandler} />
+
                 <div className="row justify-content-center">
                     <div className="col-md-6 mb-5">
                         <ul className="list-group">
                             {
-                                restaurants && restaurants.map(
+                                /*restaurants && restaurants.map(*/
+                                updateListRestaurants && updateListRestaurants.map(
                                     (restaurant, index) => (
                                         <li
                                             key={index}
