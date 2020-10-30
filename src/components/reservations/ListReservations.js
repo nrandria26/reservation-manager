@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import ReservationService from '../../services/ReservationService';
-import { BsSearch } from 'react-icons/bs';
+/*import { BsSearch } from 'react-icons/bs';*/
 import moment from 'moment';
 import 'moment/locale/fr';
 import { BiPen } from 'react-icons/bi';
@@ -41,7 +41,7 @@ const ListReservations = () => {
         setSearchReservation(value);
     };
 
-    const searchReservationByName = () => {
+    /*const searchReservationByName = () => {
         console.log("Recherche d'une réservation à partir du nom du client");
         if (searchReservation.length === 0) {
             getAllReservations();
@@ -55,7 +55,7 @@ const ListReservations = () => {
                 })
                 .catch(e => { console.log(e) });
         }
-    }
+    }*/
 
     let updateListReservations = reservations.filter(
         (reservation) => { return reservation.nameReservation.includes(searchReservation); }

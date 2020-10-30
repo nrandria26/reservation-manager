@@ -41,7 +41,7 @@ const ListCients = () => {
         setSearchClient(value);
     };
 
-    const searchClientByName = () => {
+    /*const searchClientByName = () => {
         console.log("Recherche d'un client à partir de son nom");
         if (searchClient.length === 0) {
             getAllClients();
@@ -55,7 +55,7 @@ const ListCients = () => {
                 })
                 .catch(e => { console.log(e) });
         }
-    };
+    };*/
 
     let updateListClients = clients.filter(
         (client) => { return client.lastName.includes(searchClient); }
