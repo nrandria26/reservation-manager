@@ -125,8 +125,7 @@ const DetailReservation = (props) => {
                                         </div>
 
                                         <div className="text-center">
-                                            <button type="submit" className="btn btn-warning text-white"><FaSave /> Sauvegarder</button>
-                                            {currentReservation.statusReservation ? null : (<button type="button" className="btn btn-success" style={{ marginLeft: 10 }} onClick={() => updateStatusReservation(true)}><BsCheckBox /> Valider</button>)}
+                                            {currentReservation.statusReservation ? (<button type="submit" className="btn btn-warning text-white"><FaSave /> Sauvegarder</button>) : (<button type="button" className="btn btn-success" style={{ marginLeft: 10 }} onClick={() => updateStatusReservation(true)}><BsCheckBox /> Valider</button>)}
                                             <button type="button" className="btn btn-danger" style={{ marginLeft: 10 }} onClick={deleteReservation}><FaTrashAlt /> Supprimer</button>
                                             <button type="button" className="btn btn-dark" style={{ marginLeft: 10 }} onClick={cancelMaj}>{message ? <FaSignOutAlt /> : <BsXOctagon />}{" "}{message ? 'Retour' : 'Annuler'}</button>
                                         </div>
@@ -134,7 +133,6 @@ const DetailReservation = (props) => {
                                         {message ? (<div className="alert alert-success text-center" style={{ marginTop: 10 }}>{message}</div>) : null}
                                     </form>
                                 </div>
-                                <small className="my-1 mx-1"><em>* En cas de validation d'une réservation, veuillez à bien sauvegarder l'action en cliquant sur le bouton "Sauvegarder"</em></small>
                             </div>
                         ) : (
                                 <div className="card border-primary text-center">
