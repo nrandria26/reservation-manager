@@ -1,4 +1,4 @@
-# Reservation Manager
+# Reservation Manager / React
 
 Le but de l'application est de réserver une table dans le restaurant de son choix.
 
