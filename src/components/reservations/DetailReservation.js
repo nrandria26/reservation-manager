@@ -16,6 +16,9 @@ const DetailReservation = (props) => {
         statusReservation: false
     };
     const [currentReservation, setCurrentReservation] = useState(initialReservationState);
+    const [minDate, setMinDate] = useState(new Date());
+    const [minTime, setMinTime] = useState("");
+    const [maxTime, setMaxTime] = useState("");
     const [message, setMessage] = useState("");
     const [isLoading, setIsLoading] = useState(true);
 
@@ -31,7 +34,7 @@ const DetailReservation = (props) => {
     };
 
     useEffect(
-        () => { getReservationById(props.match.params.id) }, [props.match.params.id]
+        () => { getReservationById(props.match.params.id); getCurrentDate(); setMinMaxTime(); }, [props.match.params.id]
     );
 
     const handleInputChange = event => {
@@ -85,6 +88,28 @@ const DetailReservation = (props) => {
         props.history.push("/reservations");
     };
 
+    const getCurrentDate = () => {
+        let today = new Date();
+        let dd = today.getDate();
+        let mm = today.getMonth() + 1;
+        let yyyy = today.getFullYear();
+
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+
+        today = yyyy + "-" + mm + "-" + dd;
+        setMinDate(today);
+    };
+
+    const setMinMaxTime = () => {
+        setMinTime("09:00");
+        setMaxTime("22:00");
+    };
+
     if (isLoading) {
         return <Loading />;
     } else {
@@ -109,11 +134,11 @@ const DetailReservation = (props) => {
                                         </div>
                                         <div className="form-group">
                                             <label>Date de la réservation:</label>
-                                            <input type="date" name="dateReservation" className="form-control" value={currentReservation.dateReservation} onChange={handleInputChange} required />
+                                            <input type="date" name="dateReservation" className="form-control" value={currentReservation.dateReservation} min={minDate} onChange={handleInputChange} required />
                                         </div>
                                         <div className="form-group">
                                             <label>Heure de la réservation:</label>
-                                            <input type="time" name="hourReservation" className="form-control" value={currentReservation.hourReservation} onChange={handleInputChange} required />
+                                            <input type="time" name="hourReservation" className="form-control" value={currentReservation.hourReservation} min={minTime} max={maxTime} onChange={handleInputChange} required />
                                         </div>
                                         <div className="form-group">
                                             <label>Commentaire:</label>

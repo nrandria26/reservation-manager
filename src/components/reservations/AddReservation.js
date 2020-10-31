@@ -30,7 +30,7 @@ const AddReservation = () => {
     const [restaurants, setRestaurants] = useState([]);
 
     useEffect(
-        () => { getAllClients(); getAllRestaurants(); getCurrentDate(); setMinMaxTime() }, []
+        () => { getAllClients(); getAllRestaurants(); getCurrentDate(); setMinMaxTime(); }, []
     );
 
     const handleInputChange = event => {
