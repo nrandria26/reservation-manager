@@ -6,6 +6,7 @@ import ReservationService from '../../services/ReservationService';
 import ClientService from '../../services/ClientService';
 import RestaurantService from '../../services/RestaurantService';
 import { NavLink } from 'react-router-dom';
+import Loading from '../Loading';
 
 const AddReservation = () => {
 
@@ -19,6 +20,7 @@ const AddReservation = () => {
     };
     const [reservation, setReservation] = useState(initialReservationState);
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     //Retrieve all clients and restaurants to populate select
     const [clients, setClients] = useState([]);
@@ -69,6 +71,8 @@ const AddReservation = () => {
     const newReservation = () => {
         setReservation(initialReservationState);
         setIsSubmitted(false);
+        setIsLoading(true);
+        setTimeout(() => { setIsLoading(false); }, 500);
     };
 
     const getAllClients = () => {
@@ -85,74 +89,79 @@ const AddReservation = () => {
             .then(response => {
                 console.log(response.data);
                 setRestaurants(response.data);
+                setIsLoading(false);
             })
             .catch(e => { console.log(e) });
     };
 
-    return (
-        <React.Fragment>
-            <div className="row justify-content-center">
-                <div className="col-md-auto mb-5">
-                    {isSubmitted ? (
-                        <div className="card border-primary">
-                            <div className="card-body text-center">
-                                <h5>La réservation a bien été enregistrée</h5>
-                                <button className="btn btn-success" onClick={newReservation}><BiCalendarPlus /> Créer</button>
-                                <NavLink to="/reservations"><button className="btn btn-dark" style={{ marginLeft: 10 }}><FaSignOutAlt /> Retour</button></NavLink>
-                            </div>
-                        </div>
-                    ) : (
+    if (isLoading) {
+        return <Loading />;
+    } else {
+        return (
+            <React.Fragment>
+                <div className="row justify-content-center">
+                    <div className="col-md-auto mb-5">
+                        {isSubmitted ? (
                             <div className="card border-primary">
-                                <div className="card-header text-center text-white bg-primary border-primary">
-                                    <h4><span><FcCalendar size={50} /></span> Réservation d'une table</h4>
-                                </div>
-                                <div className="card-body">
-                                    <form onSubmit={handleSubmit}>
-                                        <div className="form-group">
-                                            <label>Nom du client:</label>
-                                            <select name="nameReservation" className="form-control" onChange={handleInputChange} required>
-                                                <option value="">--- Choississez le client ---</option>
-                                                {clients.map((client) => (<option key={client.id} value={client.lastName + ' ' + client.firstName}>{client.lastName}{" "}{client.firstName}</option>))}
-                                            </select>
-                                        </div>
-                                        <div className="form-group">
-                                            <label>Nom du restaurant:</label>
-                                            <select name="nameRestaurant" className="form-control" onChange={handleInputChange} required>
-                                                <option value="">--- Choississez le restaurant ---</option>
-                                                {restaurants.map((restaurant) => (<option key={restaurant.id} value={restaurant.nameRestaurant}>{restaurant.nameRestaurant}</option>))}
-                                            </select>
-                                        </div>
-                                        <div className="form-group">
-                                            <label>Date de la réservation:</label>
-                                            <input type="date" name="dateReservation" className="form-control" value={reservation.dateReservation} onChange={handleInputChange} required />
-                                        </div>
-                                        <div className="form-group">
-                                            <label>Heure de la réservation:</label>
-                                            <input type="time" name="hourReservation" className="form-control" value={reservation.hourReservation} onChange={handleInputChange} required />
-                                        </div>
-                                        <div className="form-group">
-                                            <label>Commentaire:</label>
-                                            <input type="text" name="comment" className="form-control" value={reservation.comment} onChange={handleInputChange} />
-                                        </div>
-                                        <div className="form-group">
-                                            <label><strong>Statut:</strong></label>
-                                            {" "}<input type="checkbox" name="statusReservation" checked={reservation.statusReservation} onChange={handleInputChange} />
-                                            {" "}{reservation.statusReservation ? 'Validé' : 'En attente de validation'}
-                                        </div>
-
-                                        <div className="text-center">
-                                            <button type="submit" className="btn btn-success"><BiCalendarPlus /> Enregistrer</button>
-                                            <button type="button" className="btn btn-dark" style={{ marginLeft: 10 }} onClick={newReservation}><FaUndo /> Effacer</button>
-                                            <NavLink to="/reservations"><button type="button" className="btn btn-danger" style={{ marginLeft: 10 }}><FaSignOutAlt /> Annuler</button></NavLink>
-                                        </div>
-                                    </form>
+                                <div className="card-body text-center">
+                                    <h5>La réservation a bien été enregistrée</h5>
+                                    <button className="btn btn-success" onClick={newReservation}><BiCalendarPlus /> Créer</button>
+                                    <NavLink to="/reservations"><button className="btn btn-dark" style={{ marginLeft: 10 }}><FaSignOutAlt /> Retour</button></NavLink>
                                 </div>
                             </div>
-                        )}
+                        ) : (
+                                <div className="card border-primary">
+                                    <div className="card-header text-center text-white bg-primary border-primary">
+                                        <h4><span><FcCalendar size={50} /></span> Réservation d'une table</h4>
+                                    </div>
+                                    <div className="card-body">
+                                        <form onSubmit={handleSubmit}>
+                                            <div className="form-group">
+                                                <label>Nom du client:</label>
+                                                <select name="nameReservation" className="form-control" onChange={handleInputChange} required>
+                                                    <option value="">--- Choississez le client ---</option>
+                                                    {clients.map((client) => (<option key={client.id} value={client.lastName + ' ' + client.firstName}>{client.lastName}{" "}{client.firstName}</option>))}
+                                                </select>
+                                            </div>
+                                            <div className="form-group">
+                                                <label>Nom du restaurant:</label>
+                                                <select name="nameRestaurant" className="form-control" onChange={handleInputChange} required>
+                                                    <option value="">--- Choississez le restaurant ---</option>
+                                                    {restaurants.map((restaurant) => (<option key={restaurant.id} value={restaurant.nameRestaurant}>{restaurant.nameRestaurant}</option>))}
+                                                </select>
+                                            </div>
+                                            <div className="form-group">
+                                                <label>Date de la réservation:</label>
+                                                <input type="date" name="dateReservation" className="form-control" value={reservation.dateReservation} onChange={handleInputChange} required />
+                                            </div>
+                                            <div className="form-group">
+                                                <label>Heure de la réservation:</label>
+                                                <input type="time" name="hourReservation" className="form-control" value={reservation.hourReservation} onChange={handleInputChange} required />
+                                            </div>
+                                            <div className="form-group">
+                                                <label>Commentaire:</label>
+                                                <input type="text" name="comment" className="form-control" value={reservation.comment} onChange={handleInputChange} />
+                                            </div>
+                                            <div className="form-group">
+                                                <label><strong>Statut:</strong></label>
+                                                {" "}<input type="checkbox" name="statusReservation" checked={reservation.statusReservation} onChange={handleInputChange} />
+                                                {" "}{reservation.statusReservation ? 'Validé' : 'En attente de validation'}
+                                            </div>
+
+                                            <div className="text-center">
+                                                <button type="submit" className="btn btn-success"><BiCalendarPlus /> Enregistrer</button>
+                                                <button type="button" className="btn btn-dark" style={{ marginLeft: 10 }} onClick={newReservation}><FaUndo /> Effacer</button>
+                                                <NavLink to="/reservations"><button type="button" className="btn btn-danger" style={{ marginLeft: 10 }}><FaSignOutAlt /> Annuler</button></NavLink>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            )}
+                    </div>
                 </div>
-            </div>
-        </React.Fragment>
-    );
+            </React.Fragment>
+        );
+    }
 }
 
 export default AddReservation;

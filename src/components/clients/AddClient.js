@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaUserPlus, FaUndo, FaSignOutAlt } from 'react-icons/fa';
 import { FcViewDetails } from "react-icons/fc";
 import { NavLink } from 'react-router-dom';
 import ClientService from '../../services/ClientService';
+import Loading from '../Loading';
 
 const AddClient = () => {
 
@@ -18,6 +19,17 @@ const AddClient = () => {
     };
     const [client, setClient] = useState(initialClientState);
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(
+        () => { MountAddClient(); }, []
+    );
+
+    const MountAddClient = () => {
+        console.log("Création d'une nouvelle fiche client");
+        setIsLoading(true);
+        setTimeout(() => { setIsLoading(false); }, 500);
+    };
 
     const handleInputChange = event => {
         const { name, value } = event.target;
@@ -54,6 +66,7 @@ const AddClient = () => {
                     zip: response.data.zip
                 });
                 setIsSubmitted(true);
+                setIsLoading(false);
                 console.log(response.data);
             })
             .catch(e => { console.log(e); });
@@ -62,84 +75,90 @@ const AddClient = () => {
     const newCreateClient = () => {
         setClient(initialClientState);
         setIsSubmitted(false);
+        setIsLoading(true);
+        setTimeout(() => { setIsLoading(false); }, 500);
     };
 
-    return (
-        <React.Fragment>
-            <div className="row justify-content-center">
-                <div className="col-md-auto mb-5">
-                    {isSubmitted ? (
-                        <div className="card border-primary">
-                            <div className="card-body text-center">
-                                <h5>La fiche client a bien été créée</h5>
-                                <button className="btn btn-success" onClick={newCreateClient}><FaUserPlus /> Créer</button>
-                                <NavLink to="/clients"><button className="btn btn-dark" style={{ marginLeft: 10 }}><FaSignOutAlt /> Retour</button></NavLink>
-                            </div>
-                        </div>
-                    ) : (
+    if (isLoading) {
+        return <Loading />;
+    } else {
+        return (
+            <React.Fragment>
+                <div className="row justify-content-center">
+                    <div className="col-md-auto mb-5">
+                        {isSubmitted ? (
                             <div className="card border-primary">
-                                <div className="card-header text-center text-white bg-primary border-primary">
-                                    <h4><span><FcViewDetails size={50} /></span> Création d'une fiche client</h4>
+                                <div className="card-body text-center">
+                                    <h5>La fiche client a bien été créée</h5>
+                                    <button className="btn btn-success" onClick={newCreateClient}><FaUserPlus /> Créer</button>
+                                    <NavLink to="/clients"><button className="btn btn-dark" style={{ marginLeft: 10 }}><FaSignOutAlt /> Retour</button></NavLink>
                                 </div>
-                                <div className="card-body">
-                                    <form onSubmit={handleSubmit}>
-                                        <div className="form-row">
-                                            <div className="form-group col-md-6">
-                                                <label>Nom</label>
-                                                <input type="text" name="lastName" className="form-control" value={client.lastName} onChange={handleInputChange} required />
-                                            </div>
-                                            <div className="form-group col-md-6">
-                                                <label>Prénom</label>
-                                                <input type="text" name="firstName" className="form-control" value={client.firstName} onChange={handleInputChange} required />
-                                            </div>
-                                        </div>
-                                        <div className="form-row">
-                                            <div className="form-group col-md-6">
-                                                <label>Email</label>
-                                                <div className="input-group mb-2">
-                                                    <div className="input-group-prepend">
-                                                        <div className="input-group-text">@</div>
-                                                    </div>
-                                                    <input type="email" name="email" className="form-control" value={client.email} onChange={handleInputChange} required />
+                            </div>
+                        ) : (
+                                <div className="card border-primary">
+                                    <div className="card-header text-center text-white bg-primary border-primary">
+                                        <h4><span><FcViewDetails size={50} /></span> Création d'une fiche client</h4>
+                                    </div>
+                                    <div className="card-body">
+                                        <form onSubmit={handleSubmit}>
+                                            <div className="form-row">
+                                                <div className="form-group col-md-6">
+                                                    <label>Nom</label>
+                                                    <input type="text" name="lastName" className="form-control" value={client.lastName} onChange={handleInputChange} required />
+                                                </div>
+                                                <div className="form-group col-md-6">
+                                                    <label>Prénom</label>
+                                                    <input type="text" name="firstName" className="form-control" value={client.firstName} onChange={handleInputChange} required />
                                                 </div>
                                             </div>
-                                            <div className="form-group col-md-6">
-                                                <label>Téléphone</label>
-                                                <input type="text" name="phone" className="form-control" value={client.phone} onChange={handleInputChange} required pattern="^(?:0|\(?\+33\)?\s?|0033\s?)[1-79](?:[\.\-\s]?\d\d){4}$" />
+                                            <div className="form-row">
+                                                <div className="form-group col-md-6">
+                                                    <label>Email</label>
+                                                    <div className="input-group mb-2">
+                                                        <div className="input-group-prepend">
+                                                            <div className="input-group-text">@</div>
+                                                        </div>
+                                                        <input type="email" name="email" className="form-control" value={client.email} onChange={handleInputChange} required />
+                                                    </div>
+                                                </div>
+                                                <div className="form-group col-md-6">
+                                                    <label>Téléphone</label>
+                                                    <input type="text" name="phone" className="form-control" value={client.phone} onChange={handleInputChange} required pattern="^(?:0|\(?\+33\)?\s?|0033\s?)[1-79](?:[\.\-\s]?\d\d){4}$" />
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="form-group">
-                                            <label>Rue</label>
-                                            <input type="text" name="street" className="form-control" value={client.street} onChange={handleInputChange} required />
-                                        </div>
-                                        <div className="form-row">
-                                            <div className="form-group col-md-6">
-                                                <label>Ville</label>
-                                                <input type="text" name="city" className="form-control" value={client.city} onChange={handleInputChange} required />
+                                            <div className="form-group">
+                                                <label>Rue</label>
+                                                <input type="text" name="street" className="form-control" value={client.street} onChange={handleInputChange} required />
                                             </div>
-                                            <div className="form-group col-md-4">
-                                                <label>Pays</label>
-                                                <input type="text" name="state" className="form-control" value={client.state} onChange={handleInputChange} />
+                                            <div className="form-row">
+                                                <div className="form-group col-md-6">
+                                                    <label>Ville</label>
+                                                    <input type="text" name="city" className="form-control" value={client.city} onChange={handleInputChange} required />
+                                                </div>
+                                                <div className="form-group col-md-4">
+                                                    <label>Pays</label>
+                                                    <input type="text" name="state" className="form-control" value={client.state} onChange={handleInputChange} />
+                                                </div>
+                                                <div className="form-group col-md-2">
+                                                    <label>Code postal</label>
+                                                    <input type="text" name="zip" className="form-control" value={client.zip} onChange={handleInputChange} required pattern="^(?:[0-8]\d|9[0-8])\d{3}$" />
+                                                </div>
                                             </div>
-                                            <div className="form-group col-md-2">
-                                                <label>Code postal</label>
-                                                <input type="text" name="zip" className="form-control" value={client.zip} onChange={handleInputChange} required pattern="^(?:[0-8]\d|9[0-8])\d{3}$" />
-                                            </div>
-                                        </div>
 
-                                        <div className="text-center">
-                                            <button type="submit" className="btn btn-success"><FaUserPlus /> Créer</button>
-                                            <button type="button" className="btn btn-dark" style={{ marginLeft: 10 }} onClick={newCreateClient}><FaUndo /> Effacer</button>
-                                            <NavLink to="/clients"><button type="button" className="btn btn-danger" style={{ marginLeft: 10 }}><FaSignOutAlt /> Annuler</button></NavLink>
-                                        </div>
-                                    </form>
+                                            <div className="text-center">
+                                                <button type="submit" className="btn btn-success"><FaUserPlus /> Créer</button>
+                                                <button type="button" className="btn btn-dark" style={{ marginLeft: 10 }} onClick={newCreateClient}><FaUndo /> Effacer</button>
+                                                <NavLink to="/clients"><button type="button" className="btn btn-danger" style={{ marginLeft: 10 }}><FaSignOutAlt /> Annuler</button></NavLink>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
-                            </div>
-                        )}
+                            )}
+                    </div>
                 </div>
-            </div>
-        </React.Fragment>
-    );
+            </React.Fragment>
+        );
+    }
 }
 
 export default AddClient;
