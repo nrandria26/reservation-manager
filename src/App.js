@@ -69,9 +69,6 @@ const App = () => {
           
         </div>
 
-        <div className="container">
-        </div>
-
         <footer className="bg-dark fixed-bottom">
           <div className="container-fluid">
             <div className="row">
