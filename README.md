@@ -14,3 +14,10 @@ Le responsable pourra ajouter un restaurant dans le catalogue des restaurants, l
 
 Le responsable pourra réserver une table pour les clients dans le restaurant de leur choix.
 
+### Dependencies
+
+#### `npm install react-router-dom`
+#### `npm install react-bootstrap bootstrap`
+#### `npm install react-icons`
+#### `npm install react-moment moment`
+#### `npm install react-loader-spinner`
