@@ -9,7 +9,9 @@ const Menu = () => {
     return (
         <Navbar className="col" collapseOnSelect expand="lg" bg="dark" variant="dark">
             <Navbar.Brand>
-                <img alt="" src={logo} width="50" height="50" className="d-inline-block align-top" />
+                <a href="/clients">
+                    <img alt="" src={logo} width="50" height="50" className="d-inline-block align-top" />
+                </a>
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
