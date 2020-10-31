@@ -20,6 +20,8 @@ const AddReservation = () => {
     };
     const [reservation, setReservation] = useState(initialReservationState);
     const [minDate, setMinDate] = useState(new Date());
+    const [minTime, setMinTime] = useState("");
+    const [maxTime, setMaxTime] = useState("");
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -28,7 +30,7 @@ const AddReservation = () => {
     const [restaurants, setRestaurants] = useState([]);
 
     useEffect(
-        () => { getAllClients(); getAllRestaurants(); getCurrentDate(); }, []
+        () => { getAllClients(); getAllRestaurants(); getCurrentDate(); setMinMaxTime() }, []
     );
 
     const handleInputChange = event => {
@@ -112,6 +114,11 @@ const AddReservation = () => {
         setMinDate(today);
     };
 
+    const setMinMaxTime = () => {
+        setMinTime("09:00");
+        setMaxTime("22:00");
+    };
+
     if (isLoading) {
         return <Loading />;
     } else {
@@ -154,7 +161,7 @@ const AddReservation = () => {
                                             </div>
                                             <div className="form-group">
                                                 <label>Heure de la réservation:</label>
-                                                <input type="time" name="hourReservation" className="form-control" value={reservation.hourReservation} onChange={handleInputChange} required />
+                                                <input type="time" name="hourReservation" className="form-control" value={reservation.hourReservation} min={minTime} max={maxTime} onChange={handleInputChange} required />
                                             </div>
                                             <div className="form-group">
                                                 <label>Commentaire:</label>
