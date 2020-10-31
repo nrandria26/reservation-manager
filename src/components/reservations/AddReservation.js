@@ -19,6 +19,7 @@ const AddReservation = () => {
         statusReservation: false
     };
     const [reservation, setReservation] = useState(initialReservationState);
+    const [minDate, setMinDate] = useState(new Date());
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -27,7 +28,7 @@ const AddReservation = () => {
     const [restaurants, setRestaurants] = useState([]);
 
     useEffect(
-        () => { getAllClients(); getAllRestaurants(); }, []
+        () => { getAllClients(); getAllRestaurants(); getCurrentDate(); }, []
     );
 
     const handleInputChange = event => {
@@ -94,6 +95,23 @@ const AddReservation = () => {
             .catch(e => { console.log(e) });
     };
 
+    const getCurrentDate = () => {
+        let today = new Date();
+        let dd = today.getDate();
+        let mm = today.getMonth() + 1;
+        let yyyy = today.getFullYear();
+
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+
+        today = yyyy + "-" + mm + "-" + dd;
+        setMinDate(today);
+    };
+
     if (isLoading) {
         return <Loading />;
     } else {
@@ -132,7 +150,7 @@ const AddReservation = () => {
                                             </div>
                                             <div className="form-group">
                                                 <label>Date de la réservation:</label>
-                                                <input type="date" name="dateReservation" className="form-control" value={reservation.dateReservation} onChange={handleInputChange} required />
+                                                <input type="date" name="dateReservation" className="form-control" value={reservation.dateReservation} min={minDate} onChange={handleInputChange} required />
                                             </div>
                                             <div className="form-group">
                                                 <label>Heure de la réservation:</label>
